@@ -8,6 +8,7 @@ import type { TTSManager } from "../output/tts/manager";
 import type { AudioOutputManager } from "../output/manager";
 import type { TranscriptionEvent } from "../input/stt/types";
 import type { Letta } from "@letta-ai/letta-client";
+import { MemoryManager } from "../../memory/manager";
 
 export type OrchestratorState = "idle" | "processing" | "speaking" | "stopped";
 
@@ -21,6 +22,7 @@ export interface VoiceOrchestratorConfig {
   botName: string;
   cooldownMs?: number;
   maxResponsesPerMinute?: number;
+  memoryManager?: MemoryManager;
 }
 
 interface VoiceOrchestratorEvents {
@@ -52,6 +54,7 @@ export class VoiceOrchestrator extends EventEmitter {
   private state: OrchestratorState = "idle";
   private turnManager: TurnManager;
   private readonly config: VoiceOrchestratorConfig;
+  private memoryManager?: MemoryManager;
   private boundHandleTranscript: (event: TranscriptionEvent) => void;
   private boundHandlePlaybackFinished: (guildId: string) => void;
   private boundHandleBargeIn: (guildId: string, userId: string) => void;
@@ -61,6 +64,7 @@ export class VoiceOrchestrator extends EventEmitter {
   constructor(config: VoiceOrchestratorConfig) {
     super();
     this.config = config;
+    this.memoryManager = config.memoryManager;
     this.turnManager = new TurnManager({ cooldownMs: config.cooldownMs });
     this.boundHandleTranscript = this.handleTranscript.bind(this);
     this.boundHandlePlaybackFinished = this.handlePlaybackFinished.bind(this);
@@ -171,6 +175,7 @@ export class VoiceOrchestrator extends EventEmitter {
 
   private async processAndRespond(event: TranscriptionEvent): Promise<void> {
     this.setState("processing");
+    let attachedBlockIds: string[] = [];
 
     try {
       const cleanedText = this.cleanTranscript(event.text);
@@ -181,6 +186,10 @@ export class VoiceOrchestrator extends EventEmitter {
         userId: event.userId,
         timestamp: Date.now(),
       });
+
+      if (this.memoryManager && event.userId) {
+        attachedBlockIds = await this.memoryManager.attachUserBlocks(event.userId);
+      }
 
       const response = await this.generateResponse(cleanedText, event.userId);
 
@@ -203,6 +212,10 @@ export class VoiceOrchestrator extends EventEmitter {
     } catch (error) {
       this.emit("error", error as Error);
       this.setState("idle");
+    } finally {
+      if (this.memoryManager && attachedBlockIds.length > 0) {
+        await this.memoryManager.detachUserBlocks(attachedBlockIds);
+      }
     }
   }
 

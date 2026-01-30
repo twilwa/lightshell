@@ -539,4 +539,120 @@ describe("VoiceOrchestrator", () => {
       rateLimitedOrchestrator.destroy();
     });
   });
+
+  describe("memory integration", () => {
+    let mockMemoryManager: any;
+
+    beforeEach(() => {
+      mockMemoryManager = {
+        attachUserBlocks: vi.fn().mockResolvedValue(["block-123"]),
+        detachUserBlocks: vi.fn().mockResolvedValue(undefined),
+        on: vi.fn(),
+        emit: vi.fn(),
+      };
+    });
+
+    it("should attach memory blocks before generating response", async () => {
+      const orchestratorWithMemory = new VoiceOrchestrator({
+        guildId: testGuildId,
+        agentId: testAgentId,
+        sttManager: mockSTT as any,
+        ttsManager: mockTTS as any,
+        audioOutputManager: mockOutput as any,
+        lettaClient: mockLetta as any,
+        botName: "TestBot",
+        memoryManager: mockMemoryManager,
+      });
+
+      orchestratorWithMemory.start();
+
+      const event: TranscriptionEvent = {
+        text: "Hey TestBot, how are you?",
+        userId: "user-789",
+        isFinal: true,
+        confidence: 0.95,
+      };
+
+      mockSTT.emit("finalTranscript", event);
+      await vi.advanceTimersByTimeAsync(100);
+
+      expect(mockMemoryManager.attachUserBlocks).toHaveBeenCalledWith(
+        "user-789",
+      );
+      orchestratorWithMemory.destroy();
+    });
+
+    it("should detach memory blocks after response generation", async () => {
+      const orchestratorWithMemory = new VoiceOrchestrator({
+        guildId: testGuildId,
+        agentId: testAgentId,
+        sttManager: mockSTT as any,
+        ttsManager: mockTTS as any,
+        audioOutputManager: mockOutput as any,
+        lettaClient: mockLetta as any,
+        botName: "TestBot",
+        memoryManager: mockMemoryManager,
+      });
+
+      orchestratorWithMemory.start();
+
+      const event: TranscriptionEvent = {
+        text: "Hey TestBot, how are you?",
+        userId: "user-789",
+        isFinal: true,
+        confidence: 0.95,
+      };
+
+      mockSTT.emit("finalTranscript", event);
+      await vi.advanceTimersByTimeAsync(100);
+
+      expect(mockMemoryManager.detachUserBlocks).toHaveBeenCalledWith([
+        "block-123",
+      ]);
+      orchestratorWithMemory.destroy();
+    });
+
+    it("should work without memoryManager configured", async () => {
+      orchestrator.start();
+
+      const event: TranscriptionEvent = {
+        text: "Hey TestBot, how are you?",
+        userId: "user-789",
+        isFinal: true,
+        confidence: 0.95,
+      };
+
+      mockSTT.emit("finalTranscript", event);
+      await vi.advanceTimersByTimeAsync(100);
+
+      expect(mockLetta.agents.messages.create).toHaveBeenCalled();
+    });
+
+    it("should not attach memory when userId is missing", async () => {
+      const orchestratorWithMemory = new VoiceOrchestrator({
+        guildId: testGuildId,
+        agentId: testAgentId,
+        sttManager: mockSTT as any,
+        ttsManager: mockTTS as any,
+        audioOutputManager: mockOutput as any,
+        lettaClient: mockLetta as any,
+        botName: "TestBot",
+        memoryManager: mockMemoryManager,
+      });
+
+      orchestratorWithMemory.start();
+
+      const event: TranscriptionEvent = {
+        text: "Hey TestBot, how are you?",
+        isFinal: true,
+        confidence: 0.95,
+      };
+
+      mockSTT.emit("finalTranscript", event);
+      await vi.advanceTimersByTimeAsync(100);
+
+      expect(mockMemoryManager.attachUserBlocks).not.toHaveBeenCalled();
+      orchestratorWithMemory.destroy();
+    });
+  });
 });

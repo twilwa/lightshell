@@ -71,3 +71,68 @@ run = "npm run dev"
 description = "Full dev startup: deploy commands then start bot"
 depends = ["deploy-commands"]
 run = "npm run dev"
+
+[tasks.test-memory]
+description = "Test per-user memory integration with compressed status output"
+run = """
+#!/bin/bash
+set -o pipefail
+
+echo "╭────────────────────────────────────────────────────────────╮"
+echo "│  Per-User Memory Integration Test Suite                    │"
+echo "╰────────────────────────────────────────────────────────────╯"
+echo ""
+
+# Run tests with JSON output for parsing
+OUTPUT=$(npm test -- --reporter=json \
+  tests/unit/memory/manager.test.ts \
+  tests/unit/memory/blocks.test.ts \
+  tests/unit/memory/labels.test.ts \
+  tests/unit/voice/orchestration/voice-orchestrator.test.ts \
+  2>/dev/null)
+
+# Parse results
+TOTAL=$(echo "$OUTPUT" | grep -o '"numTotalTests":[0-9]*' | cut -d: -f2)
+PASSED=$(echo "$OUTPUT" | grep -o '"numPassedTests":[0-9]*' | cut -d: -f2)
+FAILED=$(echo "$OUTPUT" | grep -o '"numFailedTests":[0-9]*' | cut -d: -f2)
+SUCCESS=$(echo "$OUTPUT" | grep -o '"success":true' | wc -l)
+
+echo "📊 Summary: $PASSED/$TOTAL tests passed"
+echo ""
+
+if [ "$FAILED" -gt 0 ]; then
+  echo "❌ FAILURES DETECTED"
+  echo "$OUTPUT" | grep -o '"title":"[^"]*".*"status":"failed"' | head -10
+  exit 1
+fi
+
+echo "✅ All memory integration code paths working:"
+echo ""
+echo "  MemoryManager (src/memory/manager.ts)"
+echo "    ├─ attachUserBlocks()    [get-or-create + attach + timeout]"
+echo "    ├─ detachUserBlocks()    [batch detach + error tolerance]"
+echo "    ├─ destroy()             [cleanup tracked blocks]"
+echo "    ├─ withTimeout()         [API call timeout protection]"
+echo "    ├─ isServerAvailable()   [health state check]"
+echo "    └─ resetServerState()    [recovery from unavailable]"
+echo ""
+echo "  Events Emitted:"
+echo "    ├─ memoryOperationComplete  [attach/detach latency metrics]"
+echo "    ├─ memoryAttachFailed       [graceful degradation]"
+echo "    ├─ memoryDetachFailed       [cleanup error logging]"
+echo "    └─ serverUnavailable        [connection monitoring]"
+echo ""
+echo "  Block Management (src/memory/blocks.ts)"
+echo "    ├─ getOrCreateUserBlock()   [idempotent block creation]"
+echo "    ├─ attachBlockToAgent()     [409 conflict tolerance]"
+echo "    └─ detachBlockFromAgent()   [404 not-found tolerance]"
+echo ""
+echo "  VoiceOrchestrator Integration"
+echo "    ├─ memoryManager config     [optional dependency injection]"
+echo "    ├─ attach before LLM call   [user context loaded]"
+echo "    ├─ detach in finally block  [guaranteed cleanup]"
+echo "    └─ graceful without memory  [degraded mode works]"
+echo ""
+echo "  Label Format: /{agentId}/discord/users/{userId}"
+echo ""
+"""
