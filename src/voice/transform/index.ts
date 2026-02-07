@@ -1,14 +1,14 @@
 // ABOUTME: Audio transform pipeline for Discord voice processing
 // ABOUTME: Transforms stereo 48kHz to mono 16kHz for STT/wake word
 
-import { ChannelMixer } from "./channel-mixer.js";
-import { Resampler } from "./resampler.js";
-import type { TransformConfig, TransformStats } from "./types.js";
-import { DEFAULT_TRANSFORM_CONFIG } from "./types.js";
+import { ChannelMixer } from "./channel-mixer";
+import { Resampler } from "./resampler";
+import type { TransformConfig, TransformStats } from "./types";
+import { DEFAULT_TRANSFORM_CONFIG } from "./types";
 
-export { ChannelMixer } from "./channel-mixer.js";
-export { Resampler } from "./resampler.js";
-export type { TransformConfig, TransformStats } from "./types.js";
+export { ChannelMixer } from "./channel-mixer";
+export { Resampler } from "./resampler";
+export type { TransformConfig, TransformStats } from "./types";
 
 export class AudioTransformPipeline {
   private mixer: ChannelMixer;

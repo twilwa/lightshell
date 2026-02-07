@@ -1,8 +1,8 @@
 // ABOUTME: Mixes stereo audio to mono by averaging channels
 // ABOUTME: Passes through mono audio unchanged
 
-import type { TransformConfig } from "./types.js";
-import { DEFAULT_TRANSFORM_CONFIG } from "./types.js";
+import type { TransformConfig } from "./types";
+import { DEFAULT_TRANSFORM_CONFIG } from "./types";
 
 export class ChannelMixer {
   private inputChannels: number;

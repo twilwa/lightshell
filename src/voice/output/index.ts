@@ -1,13 +1,13 @@
 // ABOUTME: Audio output module exports
 // ABOUTME: Public API for voice playback functionality
 
-export { AudioOutputManager } from "./manager.js";
-export { AudioQueue } from "./queue.js";
-export { BargeInDetector } from "./barge-in.js";
+export { AudioOutputManager } from "./manager";
+export { AudioQueue } from "./queue";
+export { BargeInDetector } from "./barge-in";
 export type {
   AudioSegment,
   PlaybackStats,
   BargeInConfig,
   AudioOutputEvents,
   QueueItem,
-} from "./types.js";
+} from "./types";

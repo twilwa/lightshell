@@ -18,9 +18,9 @@ import {
   VoiceConnectionEvents,
   ConnectionManagerConfig,
   DEFAULT_CONFIG,
-} from "./types.js";
+} from "./types";
 
-export { VoiceConnectionEvents } from "./types.js";
+export { VoiceConnectionEvents } from "./types";
 
 /**
  * Check if all required dependencies for voice are installed

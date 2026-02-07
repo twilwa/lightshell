@@ -1,7 +1,7 @@
 // ABOUTME: Ring buffer for storing per-user Opus audio packets
 // ABOUTME: Handles overflow by dropping oldest packets, supports sliding window retrieval
 
-import type { AudioPacket, WindowOptions, AudioInputConfig } from "./types.js";
+import type { AudioPacket, WindowOptions, AudioInputConfig } from "./types";
 
 export class AudioBuffer {
   private buffer: AudioPacket[];

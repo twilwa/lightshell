@@ -2,15 +2,15 @@
 // ABOUTME: Coordinates transform pipeline, STT manager, and transcript aggregation
 
 import { EventEmitter } from "events";
-import type { AudioInputManager } from "./audio-input-manager.js";
-import { AudioTransformPipeline } from "../transform/index.js";
-import { STTManager } from "./stt/manager.js";
-import { TranscriptAggregator } from "./stt/aggregator.js";
-import type { TranscriptionEvent } from "./stt/types.js";
+import type { AudioInputManager } from "./audio-input-manager";
+import { AudioTransformPipeline } from "../transform/index";
+import { STTManager } from "./stt/manager";
+import { TranscriptAggregator } from "./stt/aggregator";
+import type { TranscriptionEvent } from "./stt/types";
 import type {
   AggregatedTranscript,
   ConversationTurn,
-} from "./stt/aggregator.js";
+} from "./stt/aggregator";
 
 export interface STTInputBridgeConfig {
   model?: string;

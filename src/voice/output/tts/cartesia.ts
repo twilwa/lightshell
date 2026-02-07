@@ -3,9 +3,9 @@
 
 import { Readable } from "stream";
 import { CartesiaClient } from "@cartesia/cartesia-js";
-import { loadConfig } from "../../../config/index.js";
-import { TTSProvider, TTSOptions } from "./types.js";
-import type { AudioSegment } from "../types.js";
+import { loadConfig } from "../../../config/index";
+import { TTSProvider, TTSOptions } from "./types";
+import type { AudioSegment } from "../types";
 
 const SAMPLE_RATE = 48000;
 const ENCODING = "pcm_s16le";

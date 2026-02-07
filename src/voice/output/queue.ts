@@ -2,7 +2,7 @@
 // ABOUTME: Handles enqueue, dequeue, clear operations with event emission
 
 import { EventEmitter } from "events";
-import type { AudioSegment, QueueItem } from "./types.js";
+import type { AudioSegment, QueueItem } from "./types";
 
 export interface AudioQueueEvents {
   queueEmpty: () => void;

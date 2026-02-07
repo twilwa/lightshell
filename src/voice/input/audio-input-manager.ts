@@ -6,15 +6,15 @@ import type { VoiceConnection } from "@discordjs/voice";
 import { EndBehaviorType } from "@discordjs/voice";
 import type { Readable } from "stream";
 
-import { AudioBuffer } from "./audio-buffer.js";
-import { SpeakerTracker } from "./speaker-tracker.js";
+import { AudioBuffer } from "./audio-buffer";
+import { SpeakerTracker } from "./speaker-tracker";
 import type {
   AudioInputEvents,
   AudioInputConfig,
   AudioPacket,
   WindowOptions,
-} from "./types.js";
-import { DEFAULT_AUDIO_INPUT_CONFIG } from "./types.js";
+} from "./types";
+import { DEFAULT_AUDIO_INPUT_CONFIG } from "./types";
 
 interface UserSubscription {
   stream: Readable;

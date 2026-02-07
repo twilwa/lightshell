@@ -2,8 +2,8 @@
 // ABOUTME: Detects interruptions with configurable sensitivity and cooldown
 
 import { EventEmitter } from "events";
-import type { BargeInConfig } from "./types.js";
-import { DEFAULT_BARGE_IN_CONFIG } from "./types.js";
+import type { BargeInConfig } from "./types";
+import { DEFAULT_BARGE_IN_CONFIG } from "./types";
 
 export interface BargeInDetectorEvents {
   bargeIn: (userId: string) => void;

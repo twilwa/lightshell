@@ -1,9 +1,9 @@
 import { EventEmitter } from "events";
 import { createClient, LiveTranscriptionEvents } from "@deepgram/sdk";
 import type { DeepgramClient, ListenLiveClient } from "@deepgram/sdk";
-import { loadConfig } from "../../../config/index.js";
-import { DEFAULT_STT_CONFIG } from "./types.js";
-import type { STTClient, STTConfig, TranscriptionEvent } from "./types.js";
+import { loadConfig } from "../../../config/index";
+import { DEFAULT_STT_CONFIG } from "./types";
+import type { STTClient, STTConfig, TranscriptionEvent } from "./types";
 
 export class DeepgramSTT extends EventEmitter implements STTClient {
   private client: DeepgramClient;

@@ -2,8 +2,8 @@
 // ABOUTME: Routes per-user audio to Deepgram and emits attributed transcripts
 
 import { EventEmitter } from "events";
-import { DeepgramSTT } from "./deepgram.js";
-import type { TranscriptionEvent } from "./types.js";
+import { DeepgramSTT } from "./deepgram";
+import type { TranscriptionEvent } from "./types";
 
 export interface STTManagerConfig {
   model?: string;

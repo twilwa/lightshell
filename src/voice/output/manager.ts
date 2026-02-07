@@ -14,14 +14,14 @@ import {
 } from "@discordjs/voice";
 import { Readable } from "stream";
 
-import { AudioQueue } from "./queue.js";
-import { BargeInDetector } from "./barge-in.js";
+import { AudioQueue } from "./queue";
+import { BargeInDetector } from "./barge-in";
 import type {
   AudioSegment,
   PlaybackStats,
   BargeInConfig,
   AudioOutputEvents,
-} from "./types.js";
+} from "./types";
 
 interface GuildAudioState {
   player: AudioPlayer;

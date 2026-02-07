@@ -2,10 +2,10 @@
 // ABOUTME: Handles text-to-speech synthesis and queuing for voice output
 
 import { EventEmitter } from "events";
-import type { TTSManager, TTSMetrics } from "./tts/manager.js";
-import type { AudioOutputManager } from "./manager.js";
-import type { TTSOptions } from "./tts/types.js";
-import type { AudioSegment, PlaybackStats } from "./types.js";
+import type { TTSManager, TTSMetrics } from "./tts/manager";
+import type { AudioOutputManager } from "./manager";
+import type { TTSOptions } from "./tts/types";
+import type { AudioSegment, PlaybackStats } from "./types";
 
 export interface TTSOutputBridgeConfig {
   defaultVoice?: string;

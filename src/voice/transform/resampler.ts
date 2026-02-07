@@ -1,8 +1,8 @@
 // ABOUTME: Resamples audio from one sample rate to another
 // ABOUTME: Uses linear interpolation for quality/speed balance
 
-import type { TransformConfig } from "./types.js";
-import { DEFAULT_TRANSFORM_CONFIG } from "./types.js";
+import type { TransformConfig } from "./types";
+import { DEFAULT_TRANSFORM_CONFIG } from "./types";
 
 export class Resampler {
   private inputRate: number;

@@ -3,18 +3,18 @@
 
 import { EventEmitter } from "events";
 import type { VoiceConnection } from "@discordjs/voice";
-import { AudioBuffer } from "./audio-buffer.js";
-import { SpeakerTracker } from "./speaker-tracker.js";
-import type { AudioInputConfig, AudioPacket } from "./types.js";
+import { AudioBuffer } from "./audio-buffer";
+import { SpeakerTracker } from "./speaker-tracker";
+import type { AudioInputConfig, AudioPacket } from "./types";
 
-export { AudioBuffer } from "./audio-buffer.js";
-export { SpeakerTracker } from "./speaker-tracker.js";
+export { AudioBuffer } from "./audio-buffer";
+export { SpeakerTracker } from "./speaker-tracker";
 export type {
   AudioInputConfig,
   AudioInputEvents,
   AudioPacket,
   WindowOptions,
-} from "./types.js";
+} from "./types";
 
 interface UserSubscription {
   buffer: AudioBuffer;

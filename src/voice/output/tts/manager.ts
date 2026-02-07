@@ -2,10 +2,10 @@
 // ABOUTME: Primary provider is Cartesia, falls back to ElevenLabs on failure
 
 import { EventEmitter } from "events";
-import { CartesiaTTS } from "./cartesia.js";
-import { ElevenLabsTTS } from "./elevenlabs.js";
-import { TTSProvider, TTSOptions } from "./types.js";
-import type { AudioSegment } from "../types.js";
+import { CartesiaTTS } from "./cartesia";
+import { ElevenLabsTTS } from "./elevenlabs";
+import { TTSProvider, TTSOptions } from "./types";
+import type { AudioSegment } from "../types";
 
 export interface TTSManagerConfig {
   /** Primary TTS provider to use */
